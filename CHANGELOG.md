@@ -7,19 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+*No unreleased changes*
+
+## [1.0.0] - 2026-01-11
+
 ### Added
-- REST API with FastAPI (Plan 4)
+- REST API with FastAPI
   - Prediction endpoints (single and batch)
   - Benchmark results endpoints with filtering
   - Models listing endpoint
   - OpenAPI/Swagger documentation
+- Comprehensive User Guide (`docs/USER_GUIDE.md`)
+- Project Summary with motivation and portfolio blurb (`docs/PROJECT_SUMMARY.md`)
 
 ### Fixed
 - HuggingFace Spaces deployment timeout (30 min)
   - Root cause: xgboost pulls nvidia-nccl-cu12 (290MB CUDA dependency)
   - Made xgboost and lightgbm optional in requirements.txt
   - Made model imports lazy with try/except in models/__init__.py
-  - Demo dashboard now loads without heavy ML libraries
+- CORS and XSRF settings for HuggingFace compatibility
+- Type hint errors in deep learning models (future annotations)
+
+### Changed
+- Streamlit config optimized for HuggingFace Spaces deployment
+- Debug logging added to main.py for deployment diagnostics
 
 ## [0.2.1] - 2026-01-11
 
