@@ -1,3 +1,15 @@
+---
+title: PharmacoBench
+emoji: 💊
+colorFrom: blue
+colorTo: green
+sdk: streamlit
+sdk_version: 1.28.0
+app_file: app/main.py
+pinned: false
+license: mit
+---
+
 # PharmacoBench
 
 **Comparative Auditor for In-Silico Drug Sensitivity Prediction**
