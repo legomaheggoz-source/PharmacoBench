@@ -7,6 +7,8 @@ Integrates multi-omics data (mutation, expression, methylation) with drug struct
 Based on: https://github.com/kimmo1019/DeepCDR
 """
 
+from __future__ import annotations  # Enable lazy type hint evaluation
+
 import logging
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union

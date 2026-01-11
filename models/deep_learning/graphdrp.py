@@ -7,6 +7,8 @@ Encodes drugs as molecular graphs and cell lines with 1D CNNs.
 Based on: https://github.com/hauldhut/GraphDRP
 """
 
+from __future__ import annotations  # Enable lazy type hint evaluation
+
 import logging
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
