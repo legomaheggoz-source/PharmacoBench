@@ -4,19 +4,38 @@ PharmacoBench - Main Streamlit Application
 Comparative Auditor for In-Silico Drug Sensitivity Prediction
 """
 
-import streamlit as st
 import sys
+import traceback
 from pathlib import Path
+
+# Print startup info for debugging HuggingFace issues
+print("=" * 50, flush=True)
+print("PharmacoBench Starting...", flush=True)
+print(f"Python version: {sys.version}", flush=True)
+print(f"Working directory: {Path.cwd()}", flush=True)
+print("=" * 50, flush=True)
+
+try:
+    import streamlit as st
+    print("Streamlit imported successfully", flush=True)
+except Exception as e:
+    print(f"FATAL: Failed to import streamlit: {e}", flush=True)
+    traceback.print_exc()
+    raise
 
 # Add project root to path for imports
 project_root = Path(__file__).parent.parent
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
+print(f"Project root added to path: {project_root}", flush=True)
+
 # Dynamic counts - use lightweight approach to avoid heavy imports at startup
 # This prevents loading ML libraries (sklearn, xgboost, etc.) just for counts
 NUM_MODELS = 8  # Ridge, ElasticNet, RF, XGBoost, LightGBM, MLP, GraphDRP, DeepCDR
 NUM_SPLITS = 4  # Random, Drug-Blind, Cell-Blind, Disjoint
+
+print("Setting page config...", flush=True)
 
 # Page configuration
 st.set_page_config(
@@ -251,7 +270,15 @@ def _load_fallback_css():
 
 def main():
     """Main application entry point."""
-    load_css()
+    print("main() started, loading CSS...", flush=True)
+    try:
+        load_css()
+        print("CSS loaded successfully", flush=True)
+    except Exception as e:
+        print(f"WARNING: CSS loading failed: {e}", flush=True)
+        # Continue without custom CSS
+
+    print("Rendering sidebar...", flush=True)
 
     # Sidebar
     with st.sidebar:
@@ -381,4 +408,12 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        print("Calling main()...", flush=True)
+        main()
+        print("main() completed successfully", flush=True)
+    except Exception as e:
+        print(f"FATAL ERROR in main(): {e}", flush=True)
+        traceback.print_exc()
+        st.error(f"Application error: {e}")
+        raise
