@@ -9,11 +9,31 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
+import sys
+from pathlib import Path
+from datetime import datetime
+
+# Add project root to path
+project_root = Path(__file__).parent.parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
 
 st.set_page_config(page_title="Dashboard - PharmacoBench", page_icon="📊", layout="wide")
 
-st.title("📊 Dashboard")
-st.markdown("Overview of drug sensitivity prediction benchmarks")
+# Page header with refresh capability
+col1, col2 = st.columns([5, 1])
+with col1:
+    st.title("📊 Dashboard")
+    st.markdown("Overview of drug sensitivity prediction benchmarks")
+with col2:
+    if st.button("Refresh", help="Refresh data from cache"):
+        st.cache_data.clear()
+        st.rerun()
+
+# Show last updated timestamp
+if "dashboard_last_updated" not in st.session_state:
+    st.session_state["dashboard_last_updated"] = datetime.now()
+st.caption(f"Last updated: {st.session_state['dashboard_last_updated'].strftime('%Y-%m-%d %H:%M')}")
 
 # Demo data (will be replaced with actual results)
 @st.cache_data
@@ -50,7 +70,19 @@ def get_demo_results():
     return pd.DataFrame(data)
 
 
-results_df = get_demo_results()
+# Load data with error handling
+try:
+    with st.spinner("Loading benchmark results..."):
+        results_df = get_demo_results()
+        st.session_state["dashboard_last_updated"] = datetime.now()
+except Exception as e:
+    st.error(f"Failed to load benchmark results: {str(e)}")
+    st.info("Please try refreshing the page or contact support if the issue persists.")
+    st.stop()
+
+if results_df is None or len(results_df) == 0:
+    st.warning("No benchmark results available.")
+    st.stop()
 
 # KPI Cards
 st.markdown("### Key Metrics")

@@ -12,9 +12,6 @@ import plotly.graph_objects as go
 
 st.set_page_config(page_title="Data Explorer - PharmacoBench", page_icon="🔍", layout="wide")
 
-st.title("🔍 Data Explorer")
-st.markdown("Explore the GDSC drug sensitivity dataset")
-
 
 @st.cache_data
 def get_demo_data():
@@ -42,7 +39,60 @@ def get_demo_data():
 
 # Load data
 with st.spinner("Loading data..."):
-    df = get_demo_data()
+    df_raw = get_demo_data()
+
+# =============================================================================
+# SIDEBAR FILTERS (moved to top so filters apply to all visualizations)
+# =============================================================================
+st.sidebar.markdown("### Filters")
+
+selected_source = st.sidebar.multiselect(
+    "Data Source",
+    options=df_raw["SOURCE"].unique().tolist(),
+    default=df_raw["SOURCE"].unique().tolist(),
+    help="Filter by GDSC1 or GDSC2 data source",
+)
+
+selected_tissues = st.sidebar.multiselect(
+    "Tissue Types",
+    options=sorted(df_raw["TISSUE"].unique().tolist()),
+    default=sorted(df_raw["TISSUE"].unique().tolist())[:5],
+    help="Filter by cancer tissue type",
+)
+
+ic50_min = float(df_raw["LN_IC50"].min())
+ic50_max = float(df_raw["LN_IC50"].max())
+ic50_range = st.sidebar.slider(
+    "IC50 Range (ln)",
+    min_value=ic50_min,
+    max_value=ic50_max,
+    value=(float(df_raw["LN_IC50"].quantile(0.05)), float(df_raw["LN_IC50"].quantile(0.95))),
+    help="Filter by ln(IC50) value range",
+)
+
+# Apply filters to create filtered dataframe
+df = df_raw[
+    (df_raw["SOURCE"].isin(selected_source)) &
+    (df_raw["TISSUE"].isin(selected_tissues)) &
+    (df_raw["LN_IC50"].between(ic50_range[0], ic50_range[1]))
+].copy()
+
+# Show filter status in sidebar
+st.sidebar.markdown("---")
+st.sidebar.markdown(f"**Total Records:** {len(df_raw):,}")
+st.sidebar.markdown(f"**Filtered Records:** {len(df):,}")
+filter_pct = (len(df) / len(df_raw) * 100) if len(df_raw) > 0 else 0
+st.sidebar.progress(filter_pct / 100, text=f"{filter_pct:.1f}% of data")
+
+if len(df) == 0:
+    st.warning("No data matches the current filters. Please adjust the filter settings.")
+    st.stop()
+
+# =============================================================================
+# MAIN CONTENT
+# =============================================================================
+st.title("🔍 Data Explorer")
+st.markdown("Explore the GDSC drug sensitivity dataset")
 
 # Overview metrics
 st.markdown("### Dataset Overview")
@@ -224,27 +274,3 @@ with tab4:
     })
     st.dataframe(outlier_counts, use_container_width=True)
 
-# Sidebar filters
-st.sidebar.markdown("### Filters")
-
-selected_source = st.sidebar.multiselect(
-    "Data Source",
-    options=df["SOURCE"].unique(),
-    default=df["SOURCE"].unique(),
-)
-
-selected_tissues = st.sidebar.multiselect(
-    "Tissue Types",
-    options=df["TISSUE"].unique(),
-    default=df["TISSUE"].unique()[:5],
-)
-
-ic50_range = st.sidebar.slider(
-    "IC50 Range",
-    float(df["LN_IC50"].min()),
-    float(df["LN_IC50"].max()),
-    (float(df["LN_IC50"].quantile(0.05)), float(df["LN_IC50"].quantile(0.95))),
-)
-
-st.sidebar.markdown("---")
-st.sidebar.markdown(f"**Filtered:** {len(df):,} records")

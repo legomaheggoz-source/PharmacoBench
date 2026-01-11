@@ -5,6 +5,26 @@ Comparative Auditor for In-Silico Drug Sensitivity Prediction
 """
 
 import streamlit as st
+import sys
+from pathlib import Path
+
+# Add project root to path for imports
+project_root = Path(__file__).parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
+
+# Import model registry and splitter for dynamic counts
+try:
+    from models import MODEL_REGISTRY
+    NUM_MODELS = len(MODEL_REGISTRY)
+except ImportError:
+    NUM_MODELS = 8  # Fallback
+
+try:
+    from data.splitters import DataSplitter
+    NUM_SPLITS = len(DataSplitter.VALID_STRATEGIES)
+except ImportError:
+    NUM_SPLITS = 4  # Fallback
 
 # Page configuration
 st.set_page_config(
@@ -21,10 +41,25 @@ st.set_page_config(
 
 
 def load_css():
-    """Load Aurora Solar-inspired light theme CSS."""
+    """Load Aurora Solar-inspired light theme CSS from external file."""
+    from pathlib import Path
+
+    css_path = Path(__file__).parent / "styles" / "aurora.css"
+
+    if css_path.exists():
+        with open(css_path, "r", encoding="utf-8") as f:
+            css_content = f.read()
+        st.markdown(f"<style>{css_content}</style>", unsafe_allow_html=True)
+    else:
+        # Fallback to inline CSS if file not found
+        _load_fallback_css()
+
+
+def _load_fallback_css():
+    """Fallback inline CSS if external file not found."""
     css = """
     <style>
-    /* Aurora Solar-inspired light theme */
+    /* Aurora Solar-inspired light theme (fallback) */
 
     /* Root variables */
     :root {
@@ -236,9 +271,9 @@ def main():
         st.markdown("### Quick Stats")
         col1, col2 = st.columns(2)
         with col1:
-            st.metric("Models", "8")
+            st.metric("Models", str(NUM_MODELS), help="ML models available for benchmarking")
         with col2:
-            st.metric("Splits", "4")
+            st.metric("Splits", str(NUM_SPLITS), help="Evaluation split strategies")
 
         st.divider()
 
@@ -268,18 +303,18 @@ def main():
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.markdown("""
+        st.markdown(f"""
         <div class="feature-card">
-            <h3>8</h3>
+            <h3>{NUM_MODELS}</h3>
             <div class="label">ML Models</div>
             <p>From Ridge Regression baseline to state-of-the-art Graph Neural Networks</p>
         </div>
         """, unsafe_allow_html=True)
 
     with col2:
-        st.markdown("""
+        st.markdown(f"""
         <div class="feature-card">
-            <h3>4</h3>
+            <h3>{NUM_SPLITS}</h3>
             <div class="label">Split Strategies</div>
             <p>Random, Drug-Blind, Cell-Blind, and Disjoint evaluation methods</p>
         </div>
