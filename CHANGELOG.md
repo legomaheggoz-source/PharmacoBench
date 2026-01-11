@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- REST API with FastAPI (Plan 4)
+  - Prediction endpoints (single and batch)
+  - Benchmark results endpoints with filtering
+  - Models listing endpoint
+  - OpenAPI/Swagger documentation
+
+## [0.2.1] - 2026-01-11
+
+### Added
 - Plan 2 features: Custom data upload, prediction interface
 - CONTRIBUTING.md with development guidelines
 - CHANGELOG.md to track changes
