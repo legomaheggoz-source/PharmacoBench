@@ -31,10 +31,10 @@ maxUploadSize = 200
 gatherUsageStats = false
 
 [client]
-# Show error details in development
-showErrorDetails = false
+# Show error details for debugging
+showErrorDetails = true
 toolbarMode = "minimal"
 
 [runner]
-# Performance settings
-fastReruns = true
+# Disable fastReruns which can cause issues
+fastReruns = false

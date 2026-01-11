@@ -10,6 +10,7 @@ import numpy as np
 import plotly.express as px
 from datetime import datetime
 from io import StringIO
+from typing import Tuple
 
 st.set_page_config(page_title="Custom Data - PharmacoBench", page_icon="📁", layout="wide")
 
@@ -23,7 +24,7 @@ if "custom_data_name" not in st.session_state:
     st.session_state["custom_data_name"] = None
 
 
-def validate_dataframe(df: pd.DataFrame) -> tuple[bool, str]:
+def validate_dataframe(df: pd.DataFrame) -> Tuple[bool, str]:
     """Validate uploaded dataframe has required columns."""
     required_cols = {"DRUG_NAME", "CELL_LINE_NAME"}
     ic50_cols = {"IC50", "LN_IC50", "LOG_IC50", "ic50", "ln_ic50"}
