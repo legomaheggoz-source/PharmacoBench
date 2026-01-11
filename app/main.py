@@ -5,12 +5,11 @@ Comparative Auditor for In-Silico Drug Sensitivity Prediction
 """
 
 import streamlit as st
-from pathlib import Path
 
 # Page configuration
 st.set_page_config(
     page_title="PharmacoBench",
-    page_icon="🧬",
+    page_icon="💊",
     layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
@@ -20,164 +19,220 @@ st.set_page_config(
     }
 )
 
-# Load custom CSS
+
 def load_css():
-    """Load Aurora-inspired custom CSS."""
+    """Load Aurora Solar-inspired light theme CSS."""
     css = """
     <style>
-    /* Aurora Solar-inspired theme */
+    /* Aurora Solar-inspired light theme */
+
+    /* Root variables */
     :root {
-        --primary-bg: #f8fafc;
-        --card-bg: #ffffff;
-        --primary-accent: #3b82f6;
-        --secondary-accent: #10b981;
-        --warning: #f59e0b;
-        --danger: #ef4444;
-        --text-primary: #1e293b;
-        --text-secondary: #64748b;
-        --border-color: #e2e8f0;
+        --aurora-white: #ffffff;
+        --aurora-light: #f9fafb;
+        --aurora-gray-50: #f3f4f6;
+        --aurora-gray-100: #e5e7eb;
+        --aurora-gray-200: #d1d5db;
+        --aurora-gray-500: #6b7280;
+        --aurora-gray-700: #374151;
+        --aurora-gray-900: #111827;
+        --aurora-blue: #0ea5e9;
+        --aurora-blue-light: #e0f2fe;
+        --aurora-green: #10b981;
+        --aurora-green-light: #d1fae5;
     }
 
-    /* Main container */
-    .main {
-        padding: 1rem 2rem;
+    /* Global styles */
+    .stApp {
+        background-color: var(--aurora-white);
     }
 
-    /* Card styling */
-    .metric-card {
-        background: var(--card-bg);
-        border-radius: 12px;
-        padding: 1.5rem;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        border: 1px solid var(--border-color);
-        margin-bottom: 1rem;
+    /* Remove default padding for cleaner look */
+    .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
     }
 
-    .metric-value {
-        font-size: 2rem;
+    /* Headers */
+    h1, h2, h3 {
+        color: var(--aurora-gray-900);
         font-weight: 600;
-        color: var(--text-primary);
     }
 
-    .metric-label {
+    /* Clean metric cards */
+    [data-testid="stMetric"] {
+        background-color: var(--aurora-light);
+        border: 1px solid var(--aurora-gray-100);
+        border-radius: 12px;
+        padding: 1rem;
+    }
+
+    [data-testid="stMetricLabel"] {
+        color: var(--aurora-gray-500);
         font-size: 0.875rem;
-        color: var(--text-secondary);
         text-transform: uppercase;
         letter-spacing: 0.05em;
     }
 
-    /* Header styling */
-    .app-header {
-        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-        color: white;
-        padding: 2rem;
-        border-radius: 12px;
-        margin-bottom: 2rem;
-    }
-
-    .app-header h1 {
-        color: white;
-        margin-bottom: 0.5rem;
-    }
-
-    .app-header p {
-        color: rgba(255,255,255,0.9);
-        margin: 0;
+    [data-testid="stMetricValue"] {
+        color: var(--aurora-gray-900);
+        font-weight: 600;
     }
 
     /* Sidebar styling */
-    .css-1d391kg {
-        background-color: var(--card-bg);
+    [data-testid="stSidebar"] {
+        background-color: var(--aurora-light);
+        border-right: 1px solid var(--aurora-gray-100);
     }
 
-    /* Button styling */
+    [data-testid="stSidebar"] h1 {
+        color: var(--aurora-gray-900);
+    }
+
+    /* Buttons */
     .stButton > button {
-        background-color: var(--primary-accent);
+        background-color: var(--aurora-blue);
         color: white;
-        border-radius: 8px;
         border: none;
-        padding: 0.5rem 1rem;
+        border-radius: 8px;
         font-weight: 500;
+        padding: 0.5rem 1.25rem;
+        transition: all 0.2s;
     }
 
     .stButton > button:hover {
-        background-color: #2563eb;
+        background-color: #0284c7;
+        box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
     }
 
-    /* Table styling */
-    .dataframe {
-        border: none !important;
+    /* Primary button */
+    .stButton > button[kind="primary"] {
+        background-color: var(--aurora-blue);
     }
 
-    .dataframe th {
-        background-color: var(--primary-bg) !important;
-        color: var(--text-primary) !important;
-        font-weight: 600 !important;
+    /* Tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 0.5rem;
+        background-color: transparent;
+    }
+
+    .stTabs [data-baseweb="tab"] {
+        background-color: var(--aurora-light);
+        border-radius: 8px;
+        color: var(--aurora-gray-700);
+        border: 1px solid var(--aurora-gray-100);
+    }
+
+    .stTabs [aria-selected="true"] {
+        background-color: var(--aurora-blue-light);
+        color: var(--aurora-blue);
+        border-color: var(--aurora-blue);
+    }
+
+    /* Selectbox and inputs */
+    [data-baseweb="select"] {
+        border-radius: 8px;
+    }
+
+    /* Dataframes */
+    [data-testid="stDataFrame"] {
+        border: 1px solid var(--aurora-gray-100);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    /* Expander */
+    .streamlit-expanderHeader {
+        background-color: var(--aurora-light);
+        border-radius: 8px;
+    }
+
+    /* Divider */
+    hr {
+        border-color: var(--aurora-gray-100);
+    }
+
+    /* Info boxes */
+    .stAlert {
+        border-radius: 12px;
+        border: none;
+    }
+
+    /* Success message */
+    .element-container .stSuccess {
+        background-color: var(--aurora-green-light);
+        color: #065f46;
     }
 
     /* Hide Streamlit branding */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
 
-    /* Status badges */
-    .status-badge {
-        display: inline-block;
-        padding: 0.25rem 0.75rem;
-        border-radius: 9999px;
+    /* Custom hero section */
+    .hero-section {
+        background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+        color: white;
+        padding: 2.5rem;
+        border-radius: 16px;
+        margin-bottom: 2rem;
+    }
+
+    .hero-section h1 {
+        color: white;
+        margin-bottom: 0.75rem;
+        font-size: 2rem;
+    }
+
+    .hero-section p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.1rem;
+        margin: 0;
+    }
+
+    /* Feature cards */
+    .feature-card {
+        background: var(--aurora-light);
+        border: 1px solid var(--aurora-gray-100);
+        border-radius: 12px;
+        padding: 1.5rem;
+        height: 100%;
+    }
+
+    .feature-card h3 {
+        color: var(--aurora-blue);
+        font-size: 2.5rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .feature-card .label {
+        color: var(--aurora-gray-500);
         font-size: 0.75rem;
-        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: 600;
     }
 
-    .status-success {
-        background-color: #dcfce7;
-        color: #166534;
-    }
-
-    .status-warning {
-        background-color: #fef3c7;
-        color: #92400e;
-    }
-
-    .status-error {
-        background-color: #fee2e2;
-        color: #991b1b;
+    .feature-card p {
+        color: var(--aurora-gray-700);
+        font-size: 0.875rem;
+        margin-top: 0.75rem;
     }
     </style>
     """
     st.markdown(css, unsafe_allow_html=True)
 
 
-def render_header():
-    """Render application header."""
-    st.markdown("""
-    <div class="app-header">
-        <h1>🧬 PharmacoBench</h1>
-        <p>Comparative Auditor for In-Silico Drug Sensitivity Prediction</p>
-    </div>
-    """, unsafe_allow_html=True)
+def main():
+    """Main application entry point."""
+    load_css()
 
-
-def render_sidebar():
-    """Render sidebar navigation."""
+    # Sidebar
     with st.sidebar:
-        st.image("https://img.icons8.com/fluency/96/000000/dna-helix.png", width=80)
-        st.title("PharmacoBench")
-        st.caption("v1.0.0")
+        st.markdown("## 💊 PharmacoBench")
+        st.caption("Drug Sensitivity Benchmarking")
 
         st.divider()
 
-        # Navigation links (handled by Streamlit's built-in page navigation)
-        st.markdown("### Navigation")
-        st.page_link("pages/1_Dashboard.py", label="📊 Dashboard", icon="📊")
-        st.page_link("pages/2_Data_Explorer.py", label="🔍 Data Explorer", icon="🔍")
-        st.page_link("pages/3_Model_Training.py", label="🤖 Model Training", icon="🤖")
-        st.page_link("pages/4_Benchmark_Results.py", label="📈 Benchmark Results", icon="📈")
-        st.page_link("pages/5_Drug_Analysis.py", label="💊 Drug Analysis", icon="💊")
-        st.page_link("pages/6_Cell_Line_Analysis.py", label="🧫 Cell Line Analysis", icon="🧫")
-
-        st.divider()
-
-        # Quick stats
         st.markdown("### Quick Stats")
         col1, col2 = st.columns(2)
         with col1:
@@ -187,89 +242,76 @@ def render_sidebar():
 
         st.divider()
 
-        # Links
         st.markdown("### Resources")
-        st.markdown("[📚 Documentation](https://github.com/legomaheggoz-source/PharmacoBench)")
-        st.markdown("[🐛 Report Issue](https://github.com/legomaheggoz-source/PharmacoBench/issues)")
-        st.markdown("[📊 GDSC Data](https://www.cancerrxgene.org/)")
+        st.markdown("📚 [Documentation](https://github.com/legomaheggoz-source/PharmacoBench)")
+        st.markdown("📊 [GDSC Data](https://www.cancerrxgene.org/)")
+        st.markdown("🐛 [Report Issue](https://github.com/legomaheggoz-source/PharmacoBench/issues)")
 
+    # Hero section
+    st.markdown("""
+    <div class="hero-section">
+        <h1>💊 PharmacoBench</h1>
+        <p>Comparative Auditor for In-Silico Drug Sensitivity Prediction</p>
+    </div>
+    """, unsafe_allow_html=True)
 
-def main():
-    """Main application entry point."""
-    # Load custom CSS
-    load_css()
-
-    # Render header
-    render_header()
-
-    # Main content
-    st.markdown("## Welcome to PharmacoBench")
-
+    # Introduction
     st.markdown("""
     PharmacoBench is a comprehensive benchmarking platform for evaluating machine learning
     architectures on drug sensitivity prediction. It addresses a critical challenge in drug
     discovery: **90% of drugs fail in clinical trials**, costing ~$2.6B per successful drug.
     """)
 
+    st.divider()
+
     # Feature cards
     col1, col2, col3 = st.columns(3)
 
     with col1:
         st.markdown("""
-        <div class="metric-card">
-            <div class="metric-value">8</div>
-            <div class="metric-label">ML Models</div>
-            <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #64748b;">
-                From Ridge Regression to Graph Neural Networks
-            </p>
+        <div class="feature-card">
+            <h3>8</h3>
+            <div class="label">ML Models</div>
+            <p>From Ridge Regression baseline to state-of-the-art Graph Neural Networks</p>
         </div>
         """, unsafe_allow_html=True)
 
     with col2:
         st.markdown("""
-        <div class="metric-card">
-            <div class="metric-value">4</div>
-            <div class="metric-label">Split Strategies</div>
-            <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #64748b;">
-                Random, Drug-Blind, Cell-Blind, Disjoint
-            </p>
+        <div class="feature-card">
+            <h3>4</h3>
+            <div class="label">Split Strategies</div>
+            <p>Random, Drug-Blind, Cell-Blind, and Disjoint evaluation methods</p>
         </div>
         """, unsafe_allow_html=True)
 
     with col3:
         st.markdown("""
-        <div class="metric-card">
-            <div class="metric-value">1000+</div>
-            <div class="metric-label">Cell Lines</div>
-            <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #64748b;">
-                GDSC1 + GDSC2 combined datasets
-            </p>
+        <div class="feature-card">
+            <h3>1000+</h3>
+            <div class="label">Cell Lines</div>
+            <p>GDSC1 + GDSC2 combined with ~495 drugs tested</p>
         </div>
         """, unsafe_allow_html=True)
 
     st.divider()
 
-    # Models overview
+    # Models table
     st.markdown("### Models Benchmarked")
 
-    models_data = {
+    import pandas as pd
+    models_df = pd.DataFrame({
         "Model": ["Ridge Regression", "ElasticNet", "Random Forest", "XGBoost",
                   "LightGBM", "MLP", "GraphDRP", "DeepCDR"],
-        "Type": ["Linear", "Linear", "Ensemble", "Gradient Boosting",
-                 "Gradient Boosting", "Deep Learning", "GNN", "Hybrid GNN"],
-        "Library": ["sklearn", "sklearn", "sklearn", "xgboost",
-                    "lightgbm", "PyTorch", "PyTorch Geometric", "PyTorch Geometric"],
-        "Purpose": ["Interpretability baseline", "Sparsity + regularization",
+        "Type": ["Linear", "Linear", "Ensemble", "Boosting",
+                 "Boosting", "Neural Net", "GNN", "Hybrid GNN"],
+        "Purpose": ["Interpretability baseline", "Feature selection",
                     "Non-linear baseline", "Strong tabular performance",
-                    "Fast training", "Neural network baseline",
-                    "Drug structure encoding", "State-of-the-art multi-omics"],
-    }
+                    "Fast training", "Deep learning baseline",
+                    "Drug structure encoding", "State-of-the-art"]
+    })
 
-    st.dataframe(
-        models_data,
-        use_container_width=True,
-        hide_index=True,
-    )
+    st.dataframe(models_df, use_container_width=True, hide_index=True)
 
     st.divider()
 
@@ -280,44 +322,34 @@ def main():
 
     with col1:
         st.markdown("""
-        #### 1. Explore the Data
-        Navigate to **Data Explorer** to:
-        - View dataset statistics
-        - Explore IC50 distributions
-        - Analyze drug and cell line coverage
-        """)
+        **📊 Dashboard**
+        View benchmark results overview and key performance metrics
 
-        st.markdown("""
-        #### 2. Train Models
-        Use **Model Training** to:
-        - Select models to benchmark
-        - Configure hyperparameters
-        - Run training with progress tracking
+        **🔍 Data Explorer**
+        Explore GDSC dataset statistics, distributions, and coverage
+
+        **🤖 Model Training**
+        Configure and run model training with custom hyperparameters
         """)
 
     with col2:
         st.markdown("""
-        #### 3. View Results
-        Check **Benchmark Results** to:
-        - Compare model performance
-        - View metric heatmaps
-        - Analyze across split strategies
-        """)
+        **📈 Benchmark Results**
+        Compare model performance across different split strategies
 
-        st.markdown("""
-        #### 4. Deep Dive
-        Use **Drug/Cell Line Analysis** to:
-        - View 2D molecular structures
-        - Explore sensitivity profiles
-        - Identify patterns
+        **💊 Drug Analysis**
+        Analyze individual drugs, view structures and sensitivity profiles
+
+        **🧫 Cell Line Analysis**
+        Explore cell line characteristics and drug response patterns
         """)
 
     # Footer
     st.divider()
     st.caption("""
-    PharmacoBench | MIT License | Built with Streamlit |
-    [GitHub](https://github.com/legomaheggoz-source/PharmacoBench) |
-    Data: [GDSC](https://www.cancerrxgene.org/)
+    PharmacoBench | MIT License | Built with Streamlit
+    [GitHub](https://github.com/legomaheggoz-source/PharmacoBench) •
+    [GDSC Data](https://www.cancerrxgene.org/)
     """)
 
 

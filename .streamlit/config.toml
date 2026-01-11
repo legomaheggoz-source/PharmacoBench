@@ -1,18 +1,18 @@
 # PharmacoBench Streamlit Configuration
-# Aurora Solar-inspired theme
+# Aurora Solar-inspired light theme
 
 [theme]
-# Primary accent color - Aurora blue
-primaryColor = "#3b82f6"
+# Primary accent color - Soft blue
+primaryColor = "#0ea5e9"
 
-# Background color - Light gray
-backgroundColor = "#f8fafc"
+# Background color - Pure white
+backgroundColor = "#ffffff"
 
-# Secondary background - White cards
-secondaryBackgroundColor = "#ffffff"
+# Secondary background - Very light gray for cards
+secondaryBackgroundColor = "#f8fafc"
 
-# Text color - Dark slate
-textColor = "#1e293b"
+# Text color - Soft dark gray (not pure black)
+textColor = "#374151"
 
 # Font
 font = "sans serif"
@@ -32,7 +32,7 @@ gatherUsageStats = false
 
 [client]
 # Show error details in development
-showErrorDetails = true
+showErrorDetails = false
 toolbarMode = "minimal"
 
 [runner]
