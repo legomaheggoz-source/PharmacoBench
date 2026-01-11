@@ -13,18 +13,10 @@ project_root = Path(__file__).parent.parent
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
-# Import model registry and splitter for dynamic counts
-try:
-    from models import MODEL_REGISTRY
-    NUM_MODELS = len(MODEL_REGISTRY)
-except ImportError:
-    NUM_MODELS = 8  # Fallback
-
-try:
-    from data.splitters import DataSplitter
-    NUM_SPLITS = len(DataSplitter.VALID_STRATEGIES)
-except ImportError:
-    NUM_SPLITS = 4  # Fallback
+# Dynamic counts - use lightweight approach to avoid heavy imports at startup
+# This prevents loading ML libraries (sklearn, xgboost, etc.) just for counts
+NUM_MODELS = 8  # Ridge, ElasticNet, RF, XGBoost, LightGBM, MLP, GraphDRP, DeepCDR
+NUM_SPLITS = 4  # Random, Drug-Blind, Cell-Blind, Disjoint
 
 # Page configuration
 st.set_page_config(

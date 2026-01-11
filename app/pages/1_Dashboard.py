@@ -9,14 +9,7 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
-import sys
-from pathlib import Path
 from datetime import datetime
-
-# Add project root to path
-project_root = Path(__file__).parent.parent.parent
-if str(project_root) not in sys.path:
-    sys.path.insert(0, str(project_root))
 
 st.set_page_config(page_title="Dashboard - PharmacoBench", page_icon="📊", layout="wide")
 
