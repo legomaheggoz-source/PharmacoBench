@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Models listing endpoint
   - OpenAPI/Swagger documentation
 
+### Fixed
+- HuggingFace Spaces deployment timeout (30 min)
+  - Root cause: xgboost pulls nvidia-nccl-cu12 (290MB CUDA dependency)
+  - Made xgboost and lightgbm optional in requirements.txt
+  - Made model imports lazy with try/except in models/__init__.py
+  - Demo dashboard now loads without heavy ML libraries
+
 ## [0.2.1] - 2026-01-11
 
 ### Added
