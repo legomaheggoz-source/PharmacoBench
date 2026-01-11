@@ -1,0 +1,65 @@
+{
+  "version": "2.33.0",
+  "project": "PharmacoBench",
+  "status": "running",
+  "phase": "bootstrap",
+  "iteration": 1,
+  "started_at": "2026-01-10T00:00:00Z",
+  "completion_promise": "Deliver functional Streamlit dashboard on HuggingFace Spaces with 8 ML models benchmarked across GDSC data using 4 split strategies",
+  "phases_completed": [],
+  "current_phase_progress": {
+    "phase": "bootstrap",
+    "tasks_total": 5,
+    "tasks_completed": 0,
+    "tasks_in_progress": 1,
+    "started_at": "2026-01-10T00:00:00Z"
+  },
+  "metrics": {
+    "total_tasks_completed": 0,
+    "total_tasks_failed": 0,
+    "total_agents_spawned": 0,
+    "total_commits": 0,
+    "total_lines_of_code": 0,
+    "test_coverage_percent": 0,
+    "deployment_status": "not_started"
+  },
+  "circuit_breakers": {
+    "rate_limit_hit": false,
+    "consecutive_failures": 0,
+    "last_error": null
+  },
+  "deployment_targets": {
+    "github": {
+      "repo": "legomaheggoz-source/PharmacoBench",
+      "url": "https://github.com/legomaheggoz-source/PharmacoBench",
+      "status": "pending"
+    },
+    "huggingface": {
+      "owner": "legomaheggo",
+      "space": "PharmacoBench",
+      "url": "https://huggingface.co/spaces/legomaheggo/PharmacoBench",
+      "status": "pending"
+    }
+  },
+  "tech_stack": {
+    "frontend": "streamlit",
+    "ml_traditional": ["sklearn", "xgboost", "lightgbm"],
+    "ml_deep": ["pytorch", "torch-geometric"],
+    "chemistry": ["rdkit"],
+    "visualization": ["plotly"],
+    "testing": ["pytest", "ruff"],
+    "deployment": ["docker", "huggingface-spaces"]
+  },
+  "models_to_implement": [
+    {"name": "Ridge Regression", "type": "linear", "library": "sklearn", "status": "pending"},
+    {"name": "ElasticNet", "type": "linear", "library": "sklearn", "status": "pending"},
+    {"name": "Random Forest", "type": "ensemble", "library": "sklearn", "status": "pending"},
+    {"name": "XGBoost", "type": "gradient_boosting", "library": "xgboost", "status": "pending"},
+    {"name": "LightGBM", "type": "gradient_boosting", "library": "lightgbm", "status": "pending"},
+    {"name": "MLP", "type": "deep_learning", "library": "pytorch", "status": "pending"},
+    {"name": "GraphDRP", "type": "gnn", "library": "torch-geometric", "status": "pending"},
+    {"name": "DeepCDR", "type": "hybrid_gnn", "library": "torch-geometric", "status": "pending"}
+  ],
+  "evaluation_strategies": ["random", "drug-blind", "cell-blind", "disjoint"],
+  "primary_metrics": ["rmse", "mae", "r2", "spearman", "pearson"]
+}

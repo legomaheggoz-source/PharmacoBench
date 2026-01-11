@@ -1,0 +1,38 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-01-10T00:00:00Z",
+  "summary": {
+    "total_tasks": 42,
+    "completed": 0,
+    "in_progress": 0,
+    "pending": 42,
+    "failed": 0,
+    "completion_percentage": 0
+  },
+  "by_phase": {
+    "foundation": {"total": 5, "completed": 0},
+    "data-pipeline": {"total": 4, "completed": 0},
+    "models": {"total": 9, "completed": 0},
+    "evaluation": {"total": 2, "completed": 0},
+    "streamlit": {"total": 9, "completed": 0},
+    "testing": {"total": 4, "completed": 0},
+    "documentation": {"total": 6, "completed": 0},
+    "deployment": {"total": 3, "completed": 0}
+  },
+  "efficiency": {
+    "avg_task_duration_seconds": 0,
+    "agents_spawned": 0,
+    "total_retries": 0,
+    "model_usage": {
+      "opus": 0,
+      "sonnet": 0,
+      "haiku": 0
+    }
+  },
+  "quality": {
+    "tests_passed": 0,
+    "tests_failed": 0,
+    "coverage_percent": 0,
+    "lint_errors": 0
+  }
+}

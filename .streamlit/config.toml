@@ -1,0 +1,40 @@
+# PharmacoBench Streamlit Configuration
+# Aurora Solar-inspired theme
+
+[theme]
+# Primary accent color - Aurora blue
+primaryColor = "#3b82f6"
+
+# Background color - Light gray
+backgroundColor = "#f8fafc"
+
+# Secondary background - White cards
+secondaryBackgroundColor = "#ffffff"
+
+# Text color - Dark slate
+textColor = "#1e293b"
+
+# Font
+font = "sans serif"
+
+[server]
+# Server settings for HuggingFace Spaces
+port = 7860
+address = "0.0.0.0"
+headless = true
+enableCORS = false
+enableXsrfProtection = true
+maxUploadSize = 200
+
+[browser]
+# Disable usage stats
+gatherUsageStats = false
+
+[client]
+# Show error details in development
+showErrorDetails = true
+toolbarMode = "minimal"
+
+[runner]
+# Performance settings
+fastReruns = true

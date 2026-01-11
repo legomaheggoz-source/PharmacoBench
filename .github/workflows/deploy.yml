@@ -1,0 +1,59 @@
+name: Deploy to HuggingFace Spaces
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install huggingface_hub
+        run: pip install huggingface_hub
+
+      - name: Push to HuggingFace Spaces
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          python -c "
+          from huggingface_hub import HfApi
+          import os
+
+          api = HfApi()
+
+          # Upload repository to HuggingFace Spaces
+          api.upload_folder(
+              folder_path='.',
+              repo_id='legomaheggo/PharmacoBench',
+              repo_type='space',
+              token=os.environ['HF_TOKEN'],
+              ignore_patterns=[
+                  '.git/*',
+                  '.github/*',
+                  '__pycache__/*',
+                  '*.pyc',
+                  '.env',
+                  'data/cache/*',
+                  '.loki/*',
+                  'venv/*',
+                  '.venv/*',
+              ],
+          )
+          print('Successfully deployed to HuggingFace Spaces!')
+          "
+
+      - name: Deployment summary
+        run: |
+          echo "## Deployment Complete" >> $GITHUB_STEP_SUMMARY
+          echo "App deployed to: https://huggingface.co/spaces/legomaheggo/PharmacoBench" >> $GITHUB_STEP_SUMMARY
